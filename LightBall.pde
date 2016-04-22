@@ -1,14 +1,20 @@
+float t = 0;
+
 void setup () {
-  
+  background (0);
 }
 
 void draw () {
-  background (0);
+  pushMatrix ();
+  translate (width/2, height/2);
+  rotate (t);
   stroke (200);
   fill (0);
-  ellipse (width/2, height/2, 400, 400);
+  ellipse (0, 0, 400, 400);
   fill(200);
-  ellipse (width/2, height/2-200, 10,10);
+  ellipse (0, -200, 10,10);
+  popMatrix ();
+  t+= 0.01;
 }
 
 class circleG {
