@@ -1,14 +1,8 @@
-float t1 = 0;
-float t1L = 2*3.1416;
-
-float t2 = -1;
-float t2L = 1;
-
-float x1 = 0;
-float y1 = 0;
-
-float x2 = 0;
-float y2 = 0;
+float [] xs = new float [5];   // Coordenadas x.
+float [] ys = new float [5];   // Coordenadas y.
+int [] CircR = new int [5];    // Radios de los círculos. 
+float [] ts = new float [5];   // Coordenadas t.
+float [] tsL = new float [5];  // Límites de los t (si existen).
 
 void setup () {
   background (0);
@@ -16,14 +10,41 @@ void setup () {
 
 void draw () {
   //background (0);
-  x1 = width/2;
-  y1 = height/2;
-  stroke  (200);
-  fill (0);
-  point (x1, y1);
-  ellipse (rot (x1,y1-200,x1,y1,t1)[0],rot (x1,y1-200,x1,y1,t1)[1], 400, 400);
-  if (t1 < t1L) t1+= 0.01;
-  if (t2 < t2L) t2+= 0.01;
+  xs[0] = width/2;
+  ys[0] = height/2;
+  CircR[1] = 500;
+  CircR[2] = 300;
+  CircR[3] = 200;
+  CircR[4] = 100;
+  for (int i = 1; i < 5; i++) {
+    xs[i] = rot (xs[i-1], ys[i-1] - CircR[i], xs[i-1], ys[i-1], ts[i])[0];
+    ys[i] = rot (xs[i-1], ys[i-1] - CircR[i], xs[i-1], ys[i-1], ts[i])[1];
+  }
+  // El punto de giro, blanco.
+  fill (250, 250, 250, 200);
+  ellipse (xs [0], ys [0], 10, 10);
+  // La primera azul.
+  fill (0, 0, 200);
+  ellipse (xs [1], ys [1], 10, 10);
+  // La segunda verde.
+  fill (0, 200, 0);
+  ellipse (xs [2], ys [2], 10, 10);
+  // La tercera roja.
+  fill (200, 0, 0);
+  ellipse (xs [3], ys [3], 10, 10);
+  // La cuarta amarilla.
+  fill (200, 200, 0);
+  ellipse (xs [4], ys [4], 10, 10);
+  
+  ts [1] += 0.005;
+  ts [2] -= 0.01;
+  ts [3] += 0.01;
+  ts [4] -= 0.01;
+  /*
+  for (int i = 1; i < 5; i++) {
+    ts[i] += 0.001;
+  }
+  */
 }
 
 float [] rot (float x, float y, float cx, float cy, float rad) {
