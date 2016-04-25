@@ -7,21 +7,23 @@ float [] tsC = new float [4];  // Cambios en los t.
 float [] tsL = new float [4];  // Límites de los t (si existen).
 
 Menu men;
+ScrollB scrll;
 byte ind = 0;
 
-byte nc = 1;
+byte nc = 9;
 
 void setup () {
   men = new Menu ();
+  scrll = new ScrollB (0, byte (1));
   background (0);
   CircR[0] = 300;
-  CircR[1] = 200;
-  CircR[2] = 100;
-  CircR[3] = 50;
-  tsC[0] = 0.008;
-  tsC[1] = 0.032;
-  tsC[2] = -0.02;
-  tsC[3] = 0.01;
+  CircR[1] = 100;
+  CircR[2] = 60;
+  CircR[3] = 150;
+  tsC[0] = 0.006;
+  tsC[1] = -0.01;
+  tsC[2] = 0.02;
+  tsC[3] = -0.01;
   ts[0] = 0;
   ts[1] = 0;
   ts[2] = 0;
@@ -32,6 +34,10 @@ void setup () {
 
 void draw () {
   men.display (ind);
+}
+
+void mouseDragged  () {
+  if (ind == 0) scrll.mouseD (mouseY, pmouseY);
 }
 
 float [] rot (float x, float y, float cx, float cy, float rad) {
@@ -48,6 +54,9 @@ class Menu {
   
   void display (byte tind) {
     if (tind == 0) {
+      background (0);
+      scrll.display (tind);
+      //scrll.mascr ();
       textSize (100);
       textAlign (CENTER);
       stroke (150);
@@ -60,6 +69,7 @@ class Menu {
       stroke (120);
       textSize (50);
       text ("Número de círculos: ", width/2-300, height*0.2);
+      
       
       
     } else if (tind == 10) {
@@ -78,10 +88,10 @@ class Menu {
       //ellipse (xs [1], ys [1], 10, 10);
       // La segunda verde.
       fill (0, 200, 0);
-      ellipse (xs [2], ys [2], 10, 10);
+      //ellipse (xs [2], ys [2], 10, 10);
       // La tercera roja.
       fill (200, 0, 0);
-      ellipse (xs [3], ys [3], 10, 10);
+      //ellipse (xs [3], ys [3], 10, 10);
       // La cuarta amarilla.
       fill (200, 200, 0);
       ellipse (xs [4], ys [4], 10, 10);
@@ -106,14 +116,28 @@ class Menu {
   }
 }
 
-class ScrollB () {
+class ScrollB {
   int sic = 0;
+  byte si = 0;
   
-  ScrollB (int tsic) {
+  ScrollB (int tsic, byte tsi) {
     sic = tsic;
+    si = tsi;
   }
   
-  void display (int x1, int y1, int x2, int y2) {
+  void display (byte tind) {
+    if (tind == 0) {
+      pushMatrix ();
+        translate (0, sic);
+        textAlign (LEFT);
+        textSize (70);
+        stroke (150);
+        for (byte i = 1; i <= nc; i++) text (i, width/2+200, height*0.163+100*i);
+      popMatrix ();
+    }
+  }
+  
+  void mascr (int x1, int y1, int x2, int y2) {
     fill (0);
     noStroke ();
     rect (0, 0, width, y1);
@@ -121,7 +145,15 @@ class ScrollB () {
     rect (0, 0, x1, height);
     rect (x2, 0, width-2, height);
   }
-  void mouseD (int mx, int my) {
-    
+  
+  void mouseD (int my, int myp, boolean act) {
+    if (si == 1) {
+      if (!act) {
+        act
+      }
+      //if (height*0.15 < my && my < height*0.235) {
+        sic -= (my-myp);
+     // }
+    }
   }
 }
