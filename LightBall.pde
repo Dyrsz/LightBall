@@ -40,6 +40,10 @@ void mouseDragged  () {
   if (ind == 0) scrll.mouseD (mouseY, pmouseY);
 }
 
+void mouseReleased () {
+  if (ind == 0) scrll.act = false;
+}
+
 float [] rot (float x, float y, float cx, float cy, float rad) {
   float[] ret = new float [2];
   x = x - cx;
@@ -56,7 +60,8 @@ class Menu {
     if (tind == 0) {
       background (0);
       scrll.display (tind);
-      //scrll.mascr ();
+      scrll.mascr (width/2+180, int (height*0.18), width/2+250, int (height*0.21));
+      fill (200);
       textSize (100);
       textAlign (CENTER);
       stroke (150);
@@ -119,6 +124,7 @@ class Menu {
 class ScrollB {
   int sic = 0;
   byte si = 0;
+  boolean act = false;
   
   ScrollB (int tsic, byte tsi) {
     sic = tsic;
@@ -146,14 +152,21 @@ class ScrollB {
     rect (x2, 0, width-2, height);
   }
   
-  void mouseD (int my, int myp, boolean act) {
+  void mouseD (int my, int myp) {
     if (si == 1) {
       if (!act) {
-        act
+        if (height*0.15 < my && my < height*0.235) {
+          act = true;
+        }
+      } else {
+        if (my-myp > 0) {
+          if (sic > -89*nc) sic -= my - myp;
+          if (sic < -89*nc) sic = -88*nc;
+        } else {
+          if (sic < 0) sic -= my - myp;
+          if (sic > 0) sic = 0;
+        }
       }
-      //if (height*0.15 < my && my < height*0.235) {
-        sic -= (my-myp);
-     // }
     }
   }
 }
