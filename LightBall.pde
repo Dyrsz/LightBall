@@ -1,10 +1,11 @@
-float [] xs = new float [5];   // Coordenadas x.
-float [] ys = new float [5];   // Coordenadas y.
-int [] CircR = new int [4];    // Radios de los círculos. 
-float [] ts = new float [4];   // Coordenadas t.
-float [] tsI = new float [4];  // Coordenadas t iniciales.
-float [] tsC = new float [4];  // Cambios en los t.
-float [] tsL = new float [4];  // Límites de los t (si existen).
+float [] xs = new float [5];     // Coordenadas x.
+float [] ys = new float [5];     // Coordenadas y.
+int [] CircR = new int [4];      // Radios de los círculos. 
+float [] ts = new float [4];     // Coordenadas t.
+float [] tsI = new float [4];    // Coordenadas t iniciales.
+float [] tsC = new float [4];    // Cambios en los t.
+float [] tsL = new float [4];    // Límites de los t (si existen).
+boolean [] mc = new boolean [4]; // Vector de muestras.
 
 Menu men;
 ScrollB scrll;
@@ -16,24 +17,29 @@ void setup () {
   men = new Menu ();
   scrll = new ScrollB (0, byte (1));
   background (0);
-  CircR[0] = 300;
-  CircR[1] = 100;
-  CircR[2] = 60;
+  CircR[0] = 200;
+  CircR[1] = 200;
+  CircR[2] = 200;
   CircR[3] = 150;
-  tsC[0] = 0.006;
-  tsC[1] = -0.01;
-  tsC[2] = 0.02;
-  tsC[3] = -0.01;
+  tsC[0] = 0.01;
+  tsC[1] = 0.02;
+  tsC[2] = -0.03;
+  tsC[3] = 0.02;
   ts[0] = 0;
   ts[1] = 0;
   ts[2] = 0;
   ts[3] = 0;
+  mc[0] = false;
+  mc[1] = true;
+  mc[2] = true;
+  mc[3] = true;
   for (int i = 0; i < 4; i++) tsI [i] = ts [i];
   textSize (30);
 }
 
 void draw () {
   men.display (ind);
+  text (scrll.sic, 500, 800);
 }
 
 void mouseDragged  () {
@@ -41,7 +47,7 @@ void mouseDragged  () {
 }
 
 void mouseReleased () {
-  if (ind == 0) scrll.act = false;
+  if (ind == 0) scrll.mouseR ();
 }
 
 float [] rot (float x, float y, float cx, float cy, float rad) {
@@ -90,16 +96,16 @@ class Menu {
       ellipse (xs [0], ys [0], 10, 10);
       // La primera azul.
       fill (0, 0, 200);
-      //ellipse (xs [1], ys [1], 10, 10);
+      if (mc [0]) ellipse (xs [1], ys [1], 10, 10);
       // La segunda verde.
       fill (0, 200, 0);
-      //ellipse (xs [2], ys [2], 10, 10);
+      if (mc [1]) ellipse (xs [2], ys [2], 10, 10);
       // La tercera roja.
       fill (200, 0, 0);
-      //ellipse (xs [3], ys [3], 10, 10);
+      if (mc [2]) ellipse (xs [3], ys [3], 10, 10);
       // La cuarta amarilla.
       fill (200, 200, 0);
-      ellipse (xs [4], ys [4], 10, 10);
+      if (mc [3]) ellipse (xs [4], ys [4], 10, 10);
   
       stroke (200);
       fill (200);
@@ -165,6 +171,19 @@ class ScrollB {
         } else {
           if (sic < 0) sic -= my - myp;
           if (sic > 0) sic = 0;
+        }
+      }
+    }
+  }
+  
+  void mouseR () {
+    if (si == 1) if (act) {
+      act = false;
+      for (int i = 1; i < 10; i++) {
+        if (-(i-1)*89 >= sic && sic >= -i*89) {
+          background  (20*i);
+          sic = -i*89;
+          
         }
       }
     }
