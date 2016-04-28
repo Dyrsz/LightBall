@@ -39,7 +39,6 @@ void setup () {
 
 void draw () {
   men.display (ind);
-  text (scrll.sic, 500, 800);
 }
 
 void mouseDragged  () {
@@ -144,7 +143,7 @@ class ScrollB {
         textAlign (LEFT);
         textSize (70);
         stroke (150);
-        for (byte i = 1; i <= nc; i++) text (i, width/2+200, height*0.163+100*i);
+        for (byte i = 1; i <= 9; i++) text (i, width/2+200, height*0.163+100*i);
       popMatrix ();
     }
   }
@@ -166,8 +165,8 @@ class ScrollB {
         }
       } else {
         if (my-myp > 0) {
-          if (sic > -89*nc) sic -= my - myp;
-          if (sic < -89*nc) sic = -88*nc;
+          if (sic > -89*9) sic -= my - myp;
+          if (sic < -89*9) sic = -88*9;
         } else {
           if (sic < 0) sic -= my - myp;
           if (sic > 0) sic = 0;
@@ -179,13 +178,10 @@ class ScrollB {
   void mouseR () {
     if (si == 1) if (act) {
       act = false;
-      for (int i = 1; i < 10; i++) {
-        if (-(i-1)*89 >= sic && sic >= -i*89) {
-          background  (20*i);
-          sic = -i*89;
-          
-        }
-      }
+      if (-50 <= sic && sic <= 0) nc = 1;
+      for (int i = 2; i < 9; i++) if (-i*100+50 <= sic && sic <= -(i-1)*100+50) nc = byte (i);
+      if (-850 <= sic && sic <= -750) nc = 9;
+      sic = -(nc-1)*100;
     }
   }
 }
