@@ -17,14 +17,14 @@ void setup () {
   men = new Menu ();
   scrll = new ScrollB (0, byte (1));
   background (0);
-  CircR[0] = 200;
+  CircR[0] = 300;
   CircR[1] = 200;
-  CircR[2] = 200;
-  CircR[3] = 150;
+  CircR[2] = 100;
+  CircR[3] = 50;
   tsC[0] = 0.01;
-  tsC[1] = 0.02;
+  tsC[1] = -0.01;
   tsC[2] = -0.03;
-  tsC[3] = 0.02;
+  tsC[3] = 0.03;
   ts[0] = 0;
   ts[1] = 0;
   ts[2] = 0;
@@ -79,6 +79,14 @@ class Menu {
       stroke (120);
       textSize (50);
       text ("Número de círculos: ", width/2-300, height*0.2);
+      for (int i = 1; i <= nc; i++) {
+        if (i < 6) {
+          text ("Círculo n° " + i + ":", width/6, height*0.35 + (i-1)*height*0.12);
+        }
+        if (i >= 6) {
+          text ("Círculo n° " + i + ":", 3.4*width/6, height*0.35 + (i-6)*height*0.12);
+        }
+      }
       
       
       
@@ -124,6 +132,8 @@ class Menu {
       }
     }
   }
+  
+  //  ScrollB y Button deberían ser subclases de esta.
 }
 
 class ScrollB {
@@ -182,6 +192,28 @@ class ScrollB {
       for (int i = 2; i < 9; i++) if (-i*100+50 <= sic && sic <= -(i-1)*100+50) nc = byte (i);
       if (-850 <= sic && sic <= -750) nc = 9;
       sic = -(nc-1)*100;
+    }
+  }
+}
+
+class Button { // Hago un vector de botones.
+  /*
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+  */
+  
+  Button () {}
+  
+  void display (byte ind, int tx1, int ty1, int tx2, int ty2) {
+    if (ind == 0) {
+      x1=tx1;
+      x2=tx2;
+      y1=ty1;
+      y2=ty2
+      
+      
     }
   }
 }
