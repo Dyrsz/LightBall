@@ -1,27 +1,28 @@
 float [] xs;
-// = new float [5];     // Coordenadas x.
+// = new float [10];     // Coordenadas x.
 float [] ys;
-// = new float [5];     // Coordenadas y.
+// = new float [10];     // Coordenadas y.
 int [] CircR;
-// = new int [4];      // Radios de los círculos. 
+// = new int [9];      // Radios de los círculos. 
 float [] ts;
-// = new float [4];     // Coordenadas t.
+// = new float [9];     // Coordenadas t.
 float [] tsI;
-// = new float [4];    // Coordenadas t iniciales.
+// = new float [9];    // Coordenadas t iniciales.
 float [] tsC;
-// = new float [4];    // Cambios en los t.
+// = new float [9];    // Cambios en los t.
 float [] tsL;
-// = new float [4];    // Límites de los t (si existen).
+// = new float [9];    // Límites de los t (si existen).
 boolean [] mc;
-// = new boolean [4]; // Vector de muestras.
+// = new boolean [9]; // Vector de muestras.
 
 int [] aCircR = new int [9];
 float [] atsI = new float [9];
-float [] atsC new float [9];
+float [] atsC = new float [9];
 boolean [] amc = new boolean [9];
 
 Menu men;
 ScrollB scrll;
+Button [] buttnL = new Button [2];
 byte ind = 0;
 
 byte nc = 9;
@@ -29,7 +30,17 @@ byte nc = 9;
 void setup () {
   men = new Menu ();
   scrll = new ScrollB (0, byte (1));
+  buttnL [0] = new Button (byte (0), int (3.8*width/6), int (height*0.88), int (5.2*width/6), int (height*0.94), "Inicio");
+  buttnL [1] = new Button (byte (1), int (width/15), int (height*0.92), int (width/15 + width/9), int (height*0.95), "Volver");
   background (0);
+  //
+  for (int i = 0; i < 9; i++) {
+    aCircR [i] = 100;
+    atsI [i] = 0;
+    atsC [i] = 0.01;
+    amc [i] = true;
+  }
+  //
   /*
   CircR[0] = 300;
   CircR[1] = 200;
@@ -54,6 +65,11 @@ void setup () {
 
 void draw () {
   men.display (ind);
+}
+
+void mousePressed () {
+  if (ind == 0) buttnL [0].mouseP ();
+  if (ind == 10) buttnL [1].mouseP ();
 }
 
 void mouseDragged  () {
@@ -97,12 +113,30 @@ class Menu {
       for (int i = 1; i <= nc; i++) {
         if (i < 6) {
           text ("Círculo n° " + i + ":", width/6, height*0.35 + (i-1)*height*0.12);
+          textSize (40);
+          text ("Radio: " + aCircR [i-1], width/6 +100, height*0.38 + (i-1)*height*0.12);
+          text ("Velocidad: " + atsC [i-1], width/6 +100, height*0.40 + (i-1)*height*0.12);
+          text ("P. inicial: " + atsI [i-1], width/6 +100, height*0.42 + (i-1)*height*0.12);
+          text ("Mostrar", width/6 +100, height*0.44 + (i-1)*height*0.12);
+          fill (0);
+          if (amc [i-1]) fill (0, 150, 0);
+          stroke (200);
+          rect (width/6+250, height*0.44 + (i-1)*height*0.12, 50, 40);
         }
         if (i >= 6) {
           text ("Círculo n° " + i + ":", 3.4*width/6, height*0.35 + (i-6)*height*0.12);
+          textSize (40);
+          text ("Radio: " + aCircR [i-6], 3.4*width/6 +100, height*0.39 + (i-6)*height*0.12);
+          text ("Velocidad: " + atsC [i-6], 3.4*width/6 +100, height*0.41 + (i-6)*height*0.12);
+          text ("P. inicial: " + atsI [i-6], 3.4*width/6 +100, height*0.43 + (i-6)*height*0.12);
+          text ("Mostrar", 3.4*width/6 +100, height*0.45 + (i-6)*height*0.12);
+          fill (0);
+          if (amc [i-1]) fill (0, 150, 0);
+          rect (3.4*width/6+250, height*0.44 + (i-6)*height*0.12, 50, 40);
         }
+        fill  (200);
       }
-      
+      buttnL[0].display ();
       
       
     } else if (tind == 10) {
@@ -150,15 +184,16 @@ class Menu {
       text ("Dts: ", 300, height-120);
       //text ("Límites: ", width-500, height-80);
       for (int i = 0; i < nc; i++) {
-        text (CircR [i], 450+100*i, height-200);
+        text (CircR [i], 460+100*i, height-200);
         text (tsI [i], 450+100*i, height-160);
         text (tsC [i], 450+100*i, height-120);
         //text (tsL [i], width-450+100*i, height-80);
       }
   
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < nc; i++) {
         ts[i] += tsC [i];
       }
+      buttnL [1].display ();
     }
   }
   
@@ -248,7 +283,8 @@ class Button { // Hago un vector de botones.
     rect (x1, y1, x2-x1, y2-y1);
     textAlign (CENTER);
     textSize (30);
-    text (title, (x1+x2)/2, (y1+y2)/2);
+    fill (200);
+    text (title, (x1+x2)/2, (y1+y2)/2+10);
     textAlign (LEFT);
   }
   
@@ -265,9 +301,11 @@ class Button { // Hago un vector de botones.
         for (int i = 0; i < nc; i++) {
           CircR [i] = aCircR [i];
           tsI [i] = atsI [i];
+          ts [i] = atsI [i];
           tsC [i] = atsC [i];
           mc [i] = amc [i];
         }
+        background (0);
         ind = 10;
       }
     }
