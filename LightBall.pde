@@ -1,11 +1,24 @@
-float [] xs = new float [5];     // Coordenadas x.
-float [] ys = new float [5];     // Coordenadas y.
-int [] CircR = new int [4];      // Radios de los círculos. 
-float [] ts = new float [4];     // Coordenadas t.
-float [] tsI = new float [4];    // Coordenadas t iniciales.
-float [] tsC = new float [4];    // Cambios en los t.
-float [] tsL = new float [4];    // Límites de los t (si existen).
-boolean [] mc = new boolean [4]; // Vector de muestras.
+float [] xs;
+// = new float [5];     // Coordenadas x.
+float [] ys;
+// = new float [5];     // Coordenadas y.
+int [] CircR;
+// = new int [4];      // Radios de los círculos. 
+float [] ts;
+// = new float [4];     // Coordenadas t.
+float [] tsI;
+// = new float [4];    // Coordenadas t iniciales.
+float [] tsC;
+// = new float [4];    // Cambios en los t.
+float [] tsL;
+// = new float [4];    // Límites de los t (si existen).
+boolean [] mc;
+// = new boolean [4]; // Vector de muestras.
+
+int [] aCircR = new int [9];
+float [] atsI = new float [9];
+float [] atsC new float [9];
+boolean [] amc = new boolean [9];
 
 Menu men;
 ScrollB scrll;
@@ -17,6 +30,7 @@ void setup () {
   men = new Menu ();
   scrll = new ScrollB (0, byte (1));
   background (0);
+  /*
   CircR[0] = 300;
   CircR[1] = 200;
   CircR[2] = 100;
@@ -34,6 +48,7 @@ void setup () {
   mc[2] = true;
   mc[3] = true;
   for (int i = 0; i < 4; i++) tsI [i] = ts [i];
+  */
   textSize (30);
 }
 
@@ -93,7 +108,7 @@ class Menu {
     } else if (tind == 10) {
       xs[0] = width/2;
       ys[0] = height/2;
-      for (int i = 1; i < 5; i++) {
+      for (int i = 1; i < nc+1; i++) {
         xs[i] = rot (xs[i-1], ys[i-1] - CircR[i-1], xs[i-1], ys[i-1], ts[i-1])[0];
         ys[i] = rot (xs[i-1], ys[i-1] - CircR[i-1], xs[i-1], ys[i-1], ts[i-1])[1];
       }
@@ -103,27 +118,41 @@ class Menu {
       ellipse (xs [0], ys [0], 10, 10);
       // La primera azul.
       fill (0, 0, 200);
-      if (mc [0]) ellipse (xs [1], ys [1], 10, 10);
+      if (nc <= 1) if (mc [0]) ellipse (xs [1], ys [1], 10, 10);
       // La segunda verde.
       fill (0, 200, 0);
-      if (mc [1]) ellipse (xs [2], ys [2], 10, 10);
+      if (nc <= 2) if (mc [1]) ellipse (xs [2], ys [2], 10, 10);
       // La tercera roja.
       fill (200, 0, 0);
-      if (mc [2]) ellipse (xs [3], ys [3], 10, 10);
+      if (nc <= 3) if (mc [2]) ellipse (xs [3], ys [3], 10, 10);
       // La cuarta amarilla.
       fill (200, 200, 0);
-      if (mc [3]) ellipse (xs [4], ys [4], 10, 10);
-  
+      if (nc <= 4) if (mc [3]) ellipse (xs [4], ys [4], 10, 10);
+      // La quinta.
+      fill (200, 0, 200);
+      if (nc <= 5) if (mc [4]) ellipse (xs [5], ys [5], 10, 10);
+      // La sexta.
+      fill (0, 200, 200);
+      if (nc <= 6) if (mc [5]) ellipse (xs [6], ys [6], 10, 10);
+      // La séptima.
+      fill (100, 0, 0);
+      if (nc <= 7) if (mc [6]) ellipse (xs [7], ys [7], 10, 10);
+      // La octava.
+      fill (0, 100, 0);
+      if (nc <= 8) if (mc [7]) ellipse (xs [8], ys [8], 10, 10);
+      // La novena.
+      fill (0, 0, 100);
+      if (nc <= 9) if (mc [8]) ellipse (xs [9], ys [9], 10, 10);
       stroke (200);
       fill (200);
-      text ("Radios: ", width-600, height-200);
-      text ("t iniciales: ", width-600, height-160);
-      text ("Dts: ", width-600, height-120);
+      text ("Radios: ", 300, height-200);
+      text ("t iniciales: ", 300, height-160);
+      text ("Dts: ", 300, height-120);
       //text ("Límites: ", width-500, height-80);
-      for (int i = 0; i < 4; i++) {
-        text (CircR [i], width-450+100*i, height-200);
-        text (tsI [i], width-450+100*i, height-160);
-        text (tsC [i], width-450+100*i, height-120);
+      for (int i = 0; i < nc; i++) {
+        text (CircR [i], 450+100*i, height-200);
+        text (tsI [i], 450+100*i, height-160);
+        text (tsC [i], 450+100*i, height-120);
         //text (tsL [i], width-450+100*i, height-80);
       }
   
@@ -197,23 +226,50 @@ class ScrollB {
 }
 
 class Button { // Hago un vector de botones.
-  /*
+  byte indB;
   int x1;
   int y1;
   int x2;
   int y2;
-  */
+  String title;
   
-  Button () {}
+  Button (byte tindB, int tx1, int ty1, int tx2, int ty2, String ttitle) {
+    indB = tindB;
+    x1 = tx1;
+    y1 = ty1;
+    x2 = tx2;
+    y2 = ty2;
+    title = ttitle;
+  }
   
-  void display (byte ind, int tx1, int ty1, int tx2, int ty2) {
-    if (ind == 0) {
-      x1=tx1;
-      x2=tx2;
-      y1=ty1;
-      y2=ty2
-      
-      
+  void display () {
+    fill (0);
+    stroke (180);
+    rect (x1, y1, x2-x1, y2-y1);
+    textAlign (CENTER);
+    textSize (30);
+    text (title, (x1+x2)/2, (y1+y2)/2);
+    textAlign (LEFT);
+  }
+  
+  void mouseP () {
+    if (x1 < mouseX && mouseX < x2 && y1 < mouseY && mouseY < y2) {
+      if (indB == 0) {
+        xs = new float [nc+1];
+        ys = new float [nc+1];
+        CircR = new int [nc];
+        ts = new float [nc];
+        tsI = new float [nc];
+        tsC = new float [nc];
+        mc = new boolean [nc];
+        for (int i = 0; i < nc; i++) {
+          CircR [i] = aCircR [i];
+          tsI [i] = atsI [i];
+          tsC [i] = atsC [i];
+          mc [i] = amc [i];
+        }
+        ind = 10;
+      }
     }
   }
 }
