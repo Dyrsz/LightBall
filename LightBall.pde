@@ -1,19 +1,11 @@
-float [] xs;
-// = new float [10];     // Coordenadas x.
-float [] ys;
-// = new float [10];     // Coordenadas y.
-int [] CircR;
-// = new int [9];      // Radios de los círculos. 
-float [] ts;
-// = new float [9];     // Coordenadas t.
-float [] tsI;
-// = new float [9];    // Coordenadas t iniciales.
-float [] tsC;
-// = new float [9];    // Cambios en los t.
-float [] tsL;
-// = new float [9];    // Límites de los t (si existen).
-boolean [] mc;
-// = new boolean [9]; // Vector de muestras.
+float [] xs;   // Coordenadas x.
+float [] ys;   // Coordenadas y.
+int [] CircR;  // Radios de los círculos. 
+float [] ts;   // Coordenadas t.
+float [] tsI;  // Coordenadas t iniciales.
+float [] tsC;  // Cambios en los t.
+float [] tsL;  // Límites de los t (si existen).
+boolean [] mc; // Vector de muestras.
 color [] cs = new color [9];
 
 int [] aCircR = new int [9];
@@ -23,15 +15,17 @@ boolean [] amc = new boolean [9];
 
 Menu men;
 ScrollB scrll;
-Button [] buttnL = new Button [29];
+Button [] buttnL = new Button [56];
 CheckBox [] chkB = new CheckBox [9];
 byte ind = 0;
 
 byte nc = 9;
 
+// Falta arreglar los índices de los botones.
+
 void setup () {
   men = new Menu ();
-  scrll = new ScrollB (0, byte (1));
+  scrll = new ScrollB (-(nc-1)*100, byte (1));
   buttnL [0] = new Button (byte (0), int (3.8*width/6), int (height*0.88), int (5.2*width/6), int (height*0.94), "Inicio");
   buttnL [1] = new Button (byte (1), int (width/15), int (height*0.92), int (width/15 + width/9), int (height*0.95), "Volver");
   background (0);
@@ -42,11 +36,22 @@ void setup () {
     atsC [i] = 0.01;
     amc [i] = true;
     if (i < 5) {
-      buttnL [2+3*i] = new Button (byte (2+3*i), int (width/6+100), int (height*0.38 + i*height*0.12), int (width/6 +150), int (height*0.38+i*height*0.12+50), "+");
+      buttnL [2+6*i] = new Button (byte (2+6*i), int (width/6+350), int (height*0.37 + i*height*0.12-11), int (width/6 +400), int (height*0.37+i*height*0.12+39), "+");
+      buttnL [3+6*i] = new Button (byte (3+6*i), int (width/6+420), int (height*0.37 + i*height*0.12-11), int (width/6 +470), int (height*0.37+i*height*0.12+39), "-");
+      buttnL [4+6*i] = new Button (byte (4+6*i), int (width/6+350), int (height*0.39 + i*height*0.12-11), int (width/6 +400), int (height*0.39+i*height*0.12+39), "+");
+      buttnL [5+6*i] = new Button (byte (5+6*i), int (width/6+420), int (height*0.39 + i*height*0.12-11), int (width/6 +470), int (height*0.39+i*height*0.12+39), "-");
+      buttnL [6+6*i] = new Button (byte (6+6*i), int (width/6+350), int (height*0.41 + i*height*0.12-11), int (width/6 +400), int (height*0.41+i*height*0.12+39), "+");
+      buttnL [7+6*i] = new Button (byte (7+6*i), int (width/6+420), int (height*0.41 + i*height*0.12-11), int (width/6 +470), int (height*0.41+i*height*0.12+39), "-");
       
       chkB [i] = new CheckBox (byte (i), int (width/6+190), int (height*0.43 + i*height*0.12), int (width/6 + 230), int (height*0.43 + i*height*0.12) + 40, amc [i]);
     }
     if (i >= 5) {
+      buttnL [2+6*i] = new Button (byte (2+6*i), int (3.4*width/6+350), int (height*0.37 + (i-5)*height*0.12-11), int (3.4*width/6 +400), int (height*0.37+(i-5)*height*0.12+39), "+");
+      buttnL [3+6*i] = new Button (byte (3+6*i), int (3.4*width/6+420), int (height*0.37 + (i-5)*height*0.12-11), int (3.4*width/6 +470), int (height*0.37+(i-5)*height*0.12+39), "-");
+      buttnL [4+6*i] = new Button (byte (4+6*i), int (3.4*width/6+350), int (height*0.39 + (i-5)*height*0.12-11), int (3.4*width/6 +400), int (height*0.39+(i-5)*height*0.12+39), "+");
+      buttnL [5+6*i] = new Button (byte (5+6*i), int (3.4*width/6+420), int (height*0.39 + (i-5)*height*0.12-11), int (3.4*width/6 +470), int (height*0.39+(i-5)*height*0.12+39), "-");
+      buttnL [6+6*i] = new Button (byte (6+6*i), int (3.4*width/6+350), int (height*0.41 + (i-5)*height*0.12-11), int (3.4*width/6 +400), int (height*0.41+(i-5)*height*0.12+39), "+");
+      buttnL [7+6*i] = new Button (byte (7+6*i), int (3.4*width/6+420), int (height*0.41 + (i-5)*height*0.12-11), int (3.4*width/6 +470), int (height*0.41+(i-5)*height*0.12+39), "-");
       
       chkB [i] = new CheckBox (byte (i), int (3.4*width/6+190), int (height*0.43 + (i-5)*height*0.12), int (3.4*width/6+230), int (height*0.43 + (i-5)*height*0.12) + 40, amc [i]);
     }
@@ -92,12 +97,13 @@ void mousePressed () {
   if (ind == 0) {
     buttnL [0].mouseP ();
     for (byte i = 0; i < 9; i++) chkB [i].mouseP ();
+    for (byte i = 2; i < 56; i++) buttnL [i]. mouseP ();
   }
   if (ind == 10) buttnL [1].mouseP ();
 }
 
 void mouseDragged  () {
-  if (ind == 0) scrll.mouseD (mouseY, pmouseY);
+  if (ind == 0) scrll.mouseD ();
 }
 
 void mouseReleased () {
@@ -135,6 +141,7 @@ class Menu {
       textSize (50);
       text ("Número de círculos: ", width/2-300, height*0.2);
       for (int i = 1; i <= nc; i++) {
+        textSize (50);
         if (i < 6) {
           text ("Círculo n° " + i + ":", width/6, height*0.35 + (i-1)*height*0.12);
           textSize (40);
@@ -152,7 +159,7 @@ class Menu {
           text ("Mostrar", 3.4*width/6 +30, height*0.44 + (i-6)*height*0.12);
         }
         chkB [i-1].display ();
-        for (j = 0; j < 3; j++) buttnL [2+3*i+j].display ();
+        for (int j = 0; j < 6; j++) buttnL [2+6*(i-1)+j].display ();
         fill  (200);
       }
       buttnL[0].display ();
@@ -168,9 +175,9 @@ class Menu {
       noStroke ();
       fill (250, 250, 250, 200);
       ellipse (xs [0], ys [0], 10, 10);
-      for (int i = 1; i < nc; i++) {
-        fill (cs [i]);
-        if (mc [i]) ellipse (xs [i], ys [i], 10, 10);
+      for (int i = 1; i <= nc; i++) {
+        fill (cs [i-1]);
+        if (mc [i-1]) ellipse (xs [i], ys [i], 10, 10);
       }
       stroke (200);
       fill (200);
@@ -226,18 +233,18 @@ class ScrollB {
     rect (x2, 0, width-2, height);
   }
   
-  void mouseD (int my, int myp) {
+  void mouseD () {
     if (si == 1) {
       if (!act) {
-        if (height*0.15 < my && my < height*0.235) {
+        if (height*0.15 < mouseY && mouseY < height*0.235) {
           act = true;
         }
       } else {
-        if (my-myp > 0) {
-          if (sic > -89*9) sic -= my - myp;
+        if (mouseY-pmouseY > 0) {
+          if (sic > -89*9) sic -= mouseY - pmouseY;
           if (sic < -89*9) sic = -88*9;
         } else {
-          if (sic < 0) sic -= my - myp;
+          if (sic < 0) sic -= mouseY - pmouseY;
           if (sic > 0) sic = 0;
         }
       }
@@ -255,7 +262,7 @@ class ScrollB {
   }
 }
 
-class Button { // Hago un vector de botones.
+class Button {
   byte indB;
   int x1;
   int y1;
@@ -305,6 +312,22 @@ class Button { // Hago un vector de botones.
       } else if (indB == 1) {
         ind = 0;
         background (0);
+      } else {
+        for (int i = 0; i < 9; i++) {
+          if (indB == 2+6*i) {
+            aCircR [i] += 10;
+          } else if (indB == 3+6*i) {
+            if (aCircR [i] > 0) aCircR [i] -= 10;
+          } else if (indB == 4+6*i) {
+            atsC [i] += 0.01;
+          } else if (indB == 5+6*i) {
+            atsC [i] -= 0.01;
+          } else if (indB == 6+6*i) {
+            atsI [i] += 0.01;
+          } else if (indB == 7+7*i) {
+            atsI [i] -= 0.01;
+          }
+        }
       }
     }
   }
