@@ -23,7 +23,8 @@ boolean [] amc = new boolean [9];
 
 Menu men;
 ScrollB scrll;
-Button [] buttnL = new Button [2];
+Button [] buttnL = new Button [29];
+CheckBox [] chkB = new CheckBox [9];
 byte ind = 0;
 
 byte nc = 9;
@@ -40,6 +41,15 @@ void setup () {
     atsI [i] = 0;
     atsC [i] = 0.01;
     amc [i] = true;
+    if (i < 5) {
+      buttnL [2+3*i] = new Button (byte (2+3*i), int (width/6+100), int (height*0.38 + i*height*0.12), int (width/6 +150), int (height*0.38+i*height*0.12+50), "+");
+      
+      chkB [i] = new CheckBox (byte (i), int (width/6+190), int (height*0.43 + i*height*0.12), int (width/6 + 230), int (height*0.43 + i*height*0.12) + 40, amc [i]);
+    }
+    if (i >= 5) {
+      
+      chkB [i] = new CheckBox (byte (i), int (3.4*width/6+190), int (height*0.43 + (i-5)*height*0.12), int (3.4*width/6+230), int (height*0.43 + (i-5)*height*0.12) + 40, amc [i]);
+    }
   }
   atsC [2] = -0.01;
   cs [0] = #0000FF;
@@ -79,7 +89,10 @@ void draw () {
 }
 
 void mousePressed () {
-  if (ind == 0) buttnL [0].mouseP ();
+  if (ind == 0) {
+    buttnL [0].mouseP ();
+    for (byte i = 0; i < 9; i++) chkB [i].mouseP ();
+  }
   if (ind == 10) buttnL [1].mouseP ();
 }
 
@@ -129,10 +142,6 @@ class Menu {
           text ("Velocidad: " + atsC [i-1], width/6 +30, height*0.40 + (i-1)*height*0.12);
           text ("P. inicial: " + atsI [i-1], width/6 +30, height*0.42 + (i-1)*height*0.12);
           text ("Mostrar", width/6 +30, height*0.44 + (i-1)*height*0.12);
-          fill (0);
-          if (amc [i-1]) fill (0, 150, 0);
-          stroke (200);
-          rect (width/6+180, height*0.44 + (i-1)*height*0.12, 50, 40);
         }
         if (i >= 6) {
           text ("Círculo n° " + i + ":", 3.4*width/6, height*0.35 + (i-6)*height*0.12);
@@ -141,14 +150,12 @@ class Menu {
           text ("Velocidad: " + atsC [i-6], 3.4*width/6 +30, height*0.40 + (i-6)*height*0.12);
           text ("P. inicial: " + atsI [i-6], 3.4*width/6 +30, height*0.42 + (i-6)*height*0.12);
           text ("Mostrar", 3.4*width/6 +30, height*0.44 + (i-6)*height*0.12);
-          fill (0);
-          if (amc [i-1]) fill (0, 150, 0);
-          rect (3.4*width/6+180, height*0.44 + (i-6)*height*0.12, 50, 40);
         }
+        chkB [i-1].display ();
+        for (j = 0; j < 3; j++) buttnL [2+3*i+j].display ();
         fill  (200);
       }
       buttnL[0].display ();
-      
       
     } else if (tind == 10) {
       xs[0] = width/2;
@@ -163,7 +170,7 @@ class Menu {
       ellipse (xs [0], ys [0], 10, 10);
       for (int i = 1; i < nc; i++) {
         fill (cs [i]);
-        if (mc [0]) ellipse (xs [i], ys [i], 10, 10);
+        if (mc [i]) ellipse (xs [i], ys [i], 10, 10);
       }
       stroke (200);
       fill (200);
@@ -297,8 +304,55 @@ class Button { // Hago un vector de botones.
         ind = 10;
       } else if (indB == 1) {
         ind = 0;
-        background  (0);
+        background (0);
       }
     }
+  }
+}
+
+class CheckBox {
+  byte indC;
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+  boolean bolC;
+  
+  CheckBox (byte tindC, int tx1, int ty1, int tx2, int ty2, boolean tbolC) {
+    indC = tindC;
+    x1 = tx1;
+    y1 = ty1;
+    x2 = tx2;
+    y2 = ty2;
+    bolC = tbolC;
+  }
+  
+  void display () {
+    if (bolC) {
+      stroke (180);
+      fill (0);
+      rect (x1, y1, x2-x1, y2-y1);
+      fill (0, 150, 0);
+      beginShape ();
+        vertex (x1-5, (y2+y1)/2);
+        vertex ((x1+x2)/2, y2+5);
+        vertex (x2+10, y1-10);
+        vertex ((x1+x2)/2, (y1+y2)/2 + 5);
+      endShape ();
+      fill (180);
+    } else {
+      stroke (180);
+      fill (0);
+      rect (x1, y1, x2-x1, y2-y1);
+    }
+  }
+  
+  void mouseP () {
+    if (x1 < mouseX && mouseX < x2 && y1 < mouseY && mouseY < y2) bolC = !bolC;
+    Actu (indC);
+  }
+  
+  void Actu (byte tindC) {
+    amc [tindC] = bolC;
   }
 }
