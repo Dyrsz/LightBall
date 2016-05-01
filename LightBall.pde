@@ -14,6 +14,7 @@ float [] tsL;
 // = new float [9];    // Límites de los t (si existen).
 boolean [] mc;
 // = new boolean [9]; // Vector de muestras.
+color [] cs = new color [9];
 
 int [] aCircR = new int [9];
 float [] atsI = new float [9];
@@ -40,6 +41,16 @@ void setup () {
     atsC [i] = 0.01;
     amc [i] = true;
   }
+  atsC [2] = -0.01;
+  cs [0] = #0000FF;
+  cs [1] = #00FF00;
+  cs [2] = #FF0000;
+  cs [3] = #AA00AA;
+  cs [4] = #AAAA00;
+  cs [5] = #00AAAA;
+  cs [6] = #009966;
+  cs [7] = #996600;
+  cs [8] = #660099;
   //
   /*
   CircR[0] = 300;
@@ -114,25 +125,25 @@ class Menu {
         if (i < 6) {
           text ("Círculo n° " + i + ":", width/6, height*0.35 + (i-1)*height*0.12);
           textSize (40);
-          text ("Radio: " + aCircR [i-1], width/6 +100, height*0.38 + (i-1)*height*0.12);
-          text ("Velocidad: " + atsC [i-1], width/6 +100, height*0.40 + (i-1)*height*0.12);
-          text ("P. inicial: " + atsI [i-1], width/6 +100, height*0.42 + (i-1)*height*0.12);
-          text ("Mostrar", width/6 +100, height*0.44 + (i-1)*height*0.12);
+          text ("Radio: " + aCircR [i-1], width/6 +30, height*0.38 + (i-1)*height*0.12);
+          text ("Velocidad: " + atsC [i-1], width/6 +30, height*0.40 + (i-1)*height*0.12);
+          text ("P. inicial: " + atsI [i-1], width/6 +30, height*0.42 + (i-1)*height*0.12);
+          text ("Mostrar", width/6 +30, height*0.44 + (i-1)*height*0.12);
           fill (0);
           if (amc [i-1]) fill (0, 150, 0);
           stroke (200);
-          rect (width/6+250, height*0.44 + (i-1)*height*0.12, 50, 40);
+          rect (width/6+180, height*0.44 + (i-1)*height*0.12, 50, 40);
         }
         if (i >= 6) {
           text ("Círculo n° " + i + ":", 3.4*width/6, height*0.35 + (i-6)*height*0.12);
           textSize (40);
-          text ("Radio: " + aCircR [i-6], 3.4*width/6 +100, height*0.39 + (i-6)*height*0.12);
-          text ("Velocidad: " + atsC [i-6], 3.4*width/6 +100, height*0.41 + (i-6)*height*0.12);
-          text ("P. inicial: " + atsI [i-6], 3.4*width/6 +100, height*0.43 + (i-6)*height*0.12);
-          text ("Mostrar", 3.4*width/6 +100, height*0.45 + (i-6)*height*0.12);
+          text ("Radio: " + aCircR [i-6], 3.4*width/6 +30, height*0.38 + (i-6)*height*0.12);
+          text ("Velocidad: " + atsC [i-6], 3.4*width/6 +30, height*0.40 + (i-6)*height*0.12);
+          text ("P. inicial: " + atsI [i-6], 3.4*width/6 +30, height*0.42 + (i-6)*height*0.12);
+          text ("Mostrar", 3.4*width/6 +30, height*0.44 + (i-6)*height*0.12);
           fill (0);
           if (amc [i-1]) fill (0, 150, 0);
-          rect (3.4*width/6+250, height*0.44 + (i-6)*height*0.12, 50, 40);
+          rect (3.4*width/6+180, height*0.44 + (i-6)*height*0.12, 50, 40);
         }
         fill  (200);
       }
@@ -150,33 +161,10 @@ class Menu {
       noStroke ();
       fill (250, 250, 250, 200);
       ellipse (xs [0], ys [0], 10, 10);
-      // La primera azul.
-      fill (0, 0, 200);
-      if (nc <= 1) if (mc [0]) ellipse (xs [1], ys [1], 10, 10);
-      // La segunda verde.
-      fill (0, 200, 0);
-      if (nc <= 2) if (mc [1]) ellipse (xs [2], ys [2], 10, 10);
-      // La tercera roja.
-      fill (200, 0, 0);
-      if (nc <= 3) if (mc [2]) ellipse (xs [3], ys [3], 10, 10);
-      // La cuarta amarilla.
-      fill (200, 200, 0);
-      if (nc <= 4) if (mc [3]) ellipse (xs [4], ys [4], 10, 10);
-      // La quinta.
-      fill (200, 0, 200);
-      if (nc <= 5) if (mc [4]) ellipse (xs [5], ys [5], 10, 10);
-      // La sexta.
-      fill (0, 200, 200);
-      if (nc <= 6) if (mc [5]) ellipse (xs [6], ys [6], 10, 10);
-      // La séptima.
-      fill (100, 0, 0);
-      if (nc <= 7) if (mc [6]) ellipse (xs [7], ys [7], 10, 10);
-      // La octava.
-      fill (0, 100, 0);
-      if (nc <= 8) if (mc [7]) ellipse (xs [8], ys [8], 10, 10);
-      // La novena.
-      fill (0, 0, 100);
-      if (nc <= 9) if (mc [8]) ellipse (xs [9], ys [9], 10, 10);
+      for (int i = 1; i < nc; i++) {
+        fill (cs [i]);
+        if (mc [0]) ellipse (xs [i], ys [i], 10, 10);
+      }
       stroke (200);
       fill (200);
       text ("Radios: ", 300, height-200);
@@ -307,6 +295,9 @@ class Button { // Hago un vector de botones.
         }
         background (0);
         ind = 10;
+      } else if (indB == 1) {
+        ind = 0;
+        background  (0);
       }
     }
   }
