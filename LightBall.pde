@@ -29,12 +29,12 @@ void setup () {
   buttnL [0] = new Button (byte (0), int (3.8*width/6), int (height*0.88), int (5.2*width/6), int (height*0.94), "Inicio");
   buttnL [1] = new Button (byte (1), int (width/15), int (height*0.92), int (width/15 + width/9), int (height*0.95), "Volver");
   background (0);
-  //
+  Load ();
   for (int i = 0; i < 9; i++) {
-    aCircR [i] = 100;
-    atsI [i] = 0;
-    atsC [i] = 0.01;
-    amc [i] = true;
+    // aCircR [i] = 100;
+    // atsI [i] = 0;
+    // atsC [i] = 0.01;
+    // amc [i] = true;
     if (i < 5) {
       buttnL [2+6*i] = new Button (byte (2+6*i), int (width/6+350), int (height*0.37 + i*height*0.12-11), int (width/6 +400), int (height*0.37+i*height*0.12+39), "+");
       buttnL [3+6*i] = new Button (byte (3+6*i), int (width/6+420), int (height*0.37 + i*height*0.12-11), int (width/6 +470), int (height*0.37+i*height*0.12+39), "-");
@@ -56,7 +56,6 @@ void setup () {
       chkB [i] = new CheckBox (byte (i), int (3.4*width/6+190), int (height*0.43 + (i-5)*height*0.12), int (3.4*width/6+230), int (height*0.43 + (i-5)*height*0.12) + 40, amc [i]);
     }
   }
-  atsC [2] = -0.01;
   cs [0] = #0000FF;
   cs [1] = #00FF00;
   cs [2] = #FF0000;
@@ -153,9 +152,9 @@ class Menu {
         if (i >= 6) {
           text ("Círculo n° " + i + ":", 3.4*width/6, height*0.35 + (i-6)*height*0.12);
           textSize (40);
-          text ("Radio: " + aCircR [i-6], 3.4*width/6 +30, height*0.38 + (i-6)*height*0.12);
-          text ("Velocidad: " + atsC [i-6], 3.4*width/6 +30, height*0.40 + (i-6)*height*0.12);
-          text ("P. inicial: " + atsI [i-6], 3.4*width/6 +30, height*0.42 + (i-6)*height*0.12);
+          text ("Radio: " + aCircR [i-1], 3.4*width/6 +30, height*0.38 + (i-6)*height*0.12);
+          text ("Velocidad: " + atsC [i-1], 3.4*width/6 +30, height*0.40 + (i-6)*height*0.12);
+          text ("P. inicial: " + atsI [i-1], 3.4*width/6 +30, height*0.42 + (i-6)*height*0.12);
           text ("Mostrar", 3.4*width/6 +30, height*0.44 + (i-6)*height*0.12);
         }
         chkB [i-1].display ();
@@ -310,6 +309,7 @@ class Button {
         background (0);
         ind = 10;
       } else if (indB == 1) {
+        Save ();
         ind = 0;
         background (0);
       } else {
@@ -324,7 +324,7 @@ class Button {
             atsC [i] -= 0.01;
           } else if (indB == 6+6*i) {
             atsI [i] += 0.01;
-          } else if (indB == 7+7*i) {
+          } else if (indB == 7+6*i) {
             atsI [i] -= 0.01;
           }
         }
@@ -378,4 +378,50 @@ class CheckBox {
   void Actu (byte tindC) {
     amc [tindC] = bolC;
   }
+}
+
+void Load () {
+  String [] lR = loadStrings ("Radios.txt");
+  String [] ltI = loadStrings ("Inicios.txt");
+  String [] ltC = loadStrings ("Velocidades.txt");
+  String [] lM = loadStrings ("Muestras.txt");
+  for (int i = 0; i < 9; i++) {
+    if (lR != null) {
+      aCircR [i] = int (lR [i]);
+    } else {
+      aCircR [i] = 100;
+    }
+    if (ltI != null) {
+      atsI [i] = float (ltI [i]);
+    } else {
+      atsI [i] = 0;
+    }
+    if (ltC != null) {
+      atsC [i] = float (ltC [i]);
+    } else {
+      atsC [i] = 0.01;
+    }
+    if (lM != null) {
+      amc [i] = boolean (lM [i]);
+    } else {
+      amc [i] = true;
+    }
+  }
+}
+
+void Save () {
+  String [] sR = new String [9];
+  String [] stI = new String [9];
+  String [] stC = new String [9];
+  String [] sM = new String [9];
+  for (int i = 0; i < 9; i++) {
+    sR [i] = str (aCircR [i]);
+    stI [i] = str (atsI [i]);
+    stC [i] = str (atsC [i]);
+    sM [i] = str (amc [i]);
+  }
+  saveStrings ("Radios.txt", sR);
+  saveStrings ("Inicios.txt", stI);
+  saveStrings ("Velocidades.txt", stC);
+  saveStrings ("Muestras.txt", sM);
 }
