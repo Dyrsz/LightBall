@@ -1,3 +1,8 @@
+// Quiero ponerle opciones para guardar y cargar
+// archivos concretos. Para ponerle nombre al
+// al archivo al guardar, debería ponerle un
+// teclado. Prefiero mirar cómo cargar el de Android.
+
 float [] xs;   // Coordenadas x.
 float [] ys;   // Coordenadas y.
 int [] CircR;  // Radios de los círculos. 
@@ -15,19 +20,22 @@ boolean [] amc = new boolean [9];
 
 Menu men;
 ScrollB scrll;
-Button [] buttnL = new Button [56];
+Button [] buttnL = new Button [58];
 CheckBox [] chkB = new CheckBox [9];
 byte ind = 0;
 
 byte nc = 9;
 
-// Falta arreglar los índices de los botones.
-
 void setup () {
   men = new Menu ();
   scrll = new ScrollB (-(nc-1)*100, byte (1));
-  buttnL [0] = new Button (byte (0), int (3.8*width/6), int (height*0.88), int (5.2*width/6), int (height*0.94), "Inicio");
+  buttnL [0] = new Button (byte (0), int (3.8*width/6), int (height*0.915), int (5.2*width/6), int (height*0.945), "Inicio");
   buttnL [1] = new Button (byte (1), int (width/15), int (height*0.92), int (width/15 + width/9), int (height*0.95), "Volver");
+  
+  buttnL [56] = new Button (byte (56), int (3.8*width/6), int (height*0.845), int (5.2*width/6), int (height*0.875), "Guardar");
+  buttnL [57] = new Button (byte (57), int (3.8*width/6), int (height*0.88), int (5.2*width/6), int (height*0.91), "Cargar");
+  
+  
   background (0);
   Load ();
   for (int i = 0; i < 9; i++) {
@@ -162,6 +170,8 @@ class Menu {
         fill  (200);
       }
       buttnL[0].display ();
+      buttnL[56].display ();
+      buttnL[57].display ();
       
     } else if (tind == 10) {
       xs[0] = width/2;
